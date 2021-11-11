@@ -1,5 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block head %}
+<style>
+    .enhance-btn{
+        background-color: #ff6b81;
+        border: 5px solid #ff6b81;
+        color: #fff;
+        padding: 10px;
+        font-weight: bold;
+        font-size: large;
+        border-radius: 10px;
+    }
+    .enhance-btn:hover{
+        background-color: #fff;
+        color: #ff6b81;
+    }
+
+</style>
+{% endblock head %}
 {% block content %}
     <!-- Start Hero Area -->
     <section id="home" class="hero-area">
@@ -18,7 +36,7 @@
                             </div>
                             </label><br><br>
 
-                                <input type="submit" id="enhance-btn" value="Enhance" class="custom-file-upload btn" disabled>
+                                <input type="submit" id="enhance-btn" value="Enhance" class="enhance-btn btn" disabled>
                             
                         </form>
                         <br>
