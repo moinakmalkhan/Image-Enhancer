@@ -17,8 +17,9 @@
                                 UPLOAD YOUR PHOTOS
                             </div>
                             </label><br><br>
+
+                                <input type="submit" id="enhance-btn" value="Enhance" class="custom-file-upload btn" disabled>
                             
-                            <input type="submit" id="enhance-btn" value="Enhance" class="btn btn-primary" disabled>
                         </form>
                         <br>
                         <br>
@@ -29,7 +30,6 @@
                         <img src="{% static 'images/hero/homepage_pic.png' %}" alt="#">
                     </div>
                 </div>
-                
             </div>
             <div class="row align-items-center">
                 <div class="col-lg-5 col-md-12 col-12">
@@ -54,8 +54,9 @@
             var formData = new FormData(this)
             console.log(formData)
             var url = form.attr('action'); 
-            $("#enhance-btn").val("Working on enhancement...Please wait...") 
+            $("#enhance-btn").val("Working on enhancement... Please wait...") 
             $("#enhance-btn").attr("disabled",true);
+            $("#result-image").html("")
             $.ajax({
                 type: "POST",
                 url: url,
