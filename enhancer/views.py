@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views import View
 import requests
-
+from django.conf import settings
 
 class Index(View):
     def get(self, request, *args, **kwargs):
@@ -11,7 +11,7 @@ class Index(View):
     def post(self, request, *args, **kwargs):
         if request.FILES:
             url = "https://api.perfectlyclear.io/v1/pfc"
-            api_key = "656e43230f7fd759eac3ac55fe4149a2bc0"
+            api_key = settings.PERFECTLY_CLEAR_API_KEY
             req = requests.put(url, headers={
                 "X-API-KEY": api_key,
                 "Content-Type": request.FILES['image'].content_type
