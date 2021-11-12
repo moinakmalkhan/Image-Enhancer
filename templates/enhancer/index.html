@@ -3,17 +3,27 @@
 {% block head %}
 <style>
     .enhance-btn{
-        background-color: #ff6b81;
-        border: 5px solid #ff6b81;
-        color: #fff;
-        padding: 10px;
+        background-color: #FC0C54 !important;
+        border: 5px solid #FC0C54 !important;
+        color: #fff !important;
+        padding: 15px 40px;
         font-weight: bold;
-        font-size: large;
+        font-size: 20px !important;
         border-radius: 10px;
+        display: block;
+        width: 290px !important;
     }
     .enhance-btn:hover{
-        background-color: #fff;
-        color: #ff6b81;
+        background-color: #fff !important;
+        color: #FC0C54 !important;
+    }
+    
+    span{
+        display: inline;
+    }
+    .status-text{
+
+        font-size: large !important;
     }
 
 </style>
@@ -28,35 +38,37 @@
                         <h1 class="wow fadeInLeft" data-wow-delay=".4s">TRANSFORM YOUR IMAGES.</h1>
                         <p class="wow fadeInLeft" data-wow-delay=".6s">Upload your photos and we improve them for you.</p>
                         <div class="button wow fadeInLeft" data-wow-delay=".8s">
-                        <label class="custom-file-upload">
-                        <form action="{% url 'index' %}" method="POST" id="image-form" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="file" accept="image/*" name="image" id="image" onchange="readURL(this);"/>
-                                UPLOAD YOUR PHOTOS
-                            </div>
-                            </label><br><br>
-
+                            <form action="{% url 'index' %}" method="POST" id="image-form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <label class="custom-file-upload">
+                                <input type="file" accept="image/*" name="image" onclick="removeImage()" id="image" onchange="readURL(this);"/>
+                                    UPLOAD YOUR PHOTOS
+                                </label><br><br>
                                 <input type="submit" id="enhance-btn" value="Enhance" class="enhance-btn btn" disabled>
-                            
-                        </form>
+                                <span id="status"></span>
+                            </form>
+                        </div>
                         <br>
                         <br>
                     </div>
                 </div>
                 <div class="col-lg-7 col-md-12 col-12">
-                    <div class="hero-image wow fadeInRight" data-wow-delay=".4s">
-                        <img src="{% static 'images/hero/homepage_pic.png' %}" alt="#">
+                    <div class='row'>
+                        <div class="col-lg-6 col-md-6 col-6">
+                            <div class="hero-image wow fadeInRight" data-wow-delay=".4s">
+                                <span id="display-image">
+                                    <img src="{% static 'images/hero/homepage_pic_1.png' %}" alt="#">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-6">
+                            <div class="hero-image wow fadeInRight" data-wow-delay=".4s">
+                                <span id="result-image">
+                                    <img src="{% static 'images/hero/homepage_pic_2.png' %}" alt="result-image">
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-5 col-md-12 col-12">
-                    <div class="hero-image wow fadeInRight" data-wow-delay=".4s">
-                        <img id="display-image" src="">
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-12 col-12">
-                    <span id="result-image"></span>
                 </div>
             </div>
         </div>
@@ -72,8 +84,8 @@
             var formData = new FormData(this)
             console.log(formData)
             var url = form.attr('action'); 
-            $("#enhance-btn").val("Working on enhancement... Please wait...") 
-            $("#enhance-btn").attr("disabled",true);
+            $("#status").html(`<p class="status-text">Working on enhancement... Please wait...</p>`) 
+            $("#enhance-btn").css("display","none");
             $("#result-image").html("")
             $.ajax({
                 type: "POST",
@@ -81,12 +93,10 @@
                 data: formData, 
                 success: function(data){
                     $("#result-image").html(`
-                        <div class="hero-image wow fadeInRight" data-wow-delay=".4s">
                             <img src="${data.corrected_url}" alt="#">
-                        </div>
                     `)
-                    $("#enhance-btn").val("Enhance") 
-                    $("#enhance-btn").attr("disabled",false)        
+                    $("#enhance-btn").css("display","inline")        
+                    $("#status").html("") 
                 },
                 error:(err)=>{
                     console.log(err)
@@ -102,14 +112,17 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('#display-image')
-                    .attr('src', e.target.result)
+                $('#display-image').html(`<img src="${e.target.result}" alt="#">`)
             };
             reader.readAsDataURL(input.files[0]);    
             $("#enhance-btn").attr("disabled",false)        
         }
         else $("#enhance-btn").attr("disabled",true)        
         
+    }
+    function removeImage(){
+        $("#result-image").html("")
+        $("#display-image").html("")
     }
 
 </script>
